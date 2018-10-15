@@ -18,15 +18,17 @@ public class SenderTableRenderer implements TableCellRenderer {
         label.setOpaque(true);
         label.setForeground(Color.LIGHT_GRAY);
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setFont(f.deriveFont(Font.BOLD, 14));
+        label.setFont(new Font("Arial", Font.BOLD+Font.ITALIC, 14));
         
         if (s.getBand().equals("FM")) {
             c = Color.RED;
-            label.setBackground(c);
+            label.setBackground(isSelected ? Color.BLACK : c);
+            label.setForeground(isSelected ? Color.WHITE : Color.LIGHT_GRAY);
         }
         if (s.getBand().equals("AM")) {
             c = Color.BLUE;
-            label.setBackground(c);
+            label.setBackground(isSelected ? Color.BLACK : c);
+            label.setForeground(isSelected ? Color.WHITE : Color.LIGHT_GRAY);
         }
 
         switch (column) {

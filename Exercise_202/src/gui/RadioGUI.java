@@ -18,18 +18,15 @@ public class RadioGUI extends javax.swing.JFrame {
     /**
      * Creates new form RadioGUI
      */
-    private SenderTableModel model= new SenderTableModel();
+    private SenderTableModel model = new SenderTableModel();
     private SenderTableRenderer renderer = new SenderTableRenderer();
-    private SenderDlg dlg = new SenderDlg(this, true);
-    
-    
+
     public RadioGUI() {
         initComponents();
         radioTable.setModel(model);
         radioTable.setDefaultRenderer(Object.class, renderer);
-        
-        model.addSender(new Sender("test", 200, "FM"));
-        model.addSender(new Sender("test", 200, "AM"));
+        itemHide.setVisible(false);
+        itemShow.setVisible(false);
     }
 
     /**
@@ -57,9 +54,19 @@ public class RadioGUI extends javax.swing.JFrame {
         popupmenu.add(itemHinzufügen);
 
         itemHide.setText("Band verstecken");
+        itemHide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemHideActionPerformed(evt);
+            }
+        });
         popupmenu.add(itemHide);
 
         itemShow.setText("Band anzeigen");
+        itemShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemShowActionPerformed(evt);
+            }
+        });
         popupmenu.add(itemShow);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -96,8 +103,31 @@ public class RadioGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void itemHinzufügenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemHinzufügenActionPerformed
-        model.addSender(new Sender(dlg.getSendername(), dlg.getFrequenz(), dlg.getBand()));
+        SenderDlg dlg = new SenderDlg(this, true);
+        dlg.setVisible(true);
+        if (dlg.isOk()) {
+            model.addSender(new Sender(dlg.getSendername(), dlg.getFrequenz(), dlg.getBand()));
+
+            if (model.getRowCount() > 0) {
+                itemHide.setVisible(true);
+                itemShow.setVisible(true);
+            }
+        }
     }//GEN-LAST:event_itemHinzufügenActionPerformed
+
+    private void itemHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemHideActionPerformed
+        if (model.getRowCount() > 0) {
+            model.setShow(false);
+            model.updateTable();
+        }
+    }//GEN-LAST:event_itemHideActionPerformed
+
+    private void itemShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemShowActionPerformed
+        if (model.getRowCount() > 0) {
+            model.setShow(true);
+            model.updateTable();
+        }
+    }//GEN-LAST:event_itemShowActionPerformed
 
     /**
      * @param args the command line arguments

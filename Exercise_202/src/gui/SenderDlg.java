@@ -5,6 +5,8 @@
  */
 package gui;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JoZuG
@@ -148,7 +150,11 @@ public class SenderDlg extends javax.swing.JDialog {
         sendername = tfSendername.getText();
         frequenz =  Double.parseDouble(tfFrequenz.getText());
         band = tfBand.getText();
-        this.dispose();
+        if(band.equals("AM") || band.equals("FM")) {
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Es muss entweder: AM oder FM angegeben werden!");
+        }
     }//GEN-LAST:event_btOKActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
