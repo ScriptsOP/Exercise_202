@@ -8,6 +8,12 @@ package gui;
 import bl.Sender;
 import bl.SenderTableModel;
 import bl.SenderTableRenderer;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,13 +26,15 @@ public class RadioGUI extends javax.swing.JFrame {
      */
     private SenderTableModel model = new SenderTableModel();
     private SenderTableRenderer renderer = new SenderTableRenderer();
+    private File f = new File("src\\data.bin");
 
-    public RadioGUI() {
+    public RadioGUI() throws IOException, FileNotFoundException, ClassNotFoundException {
         initComponents();
         radioTable.setModel(model);
         radioTable.setDefaultRenderer(Object.class, renderer);
         itemHide.setVisible(false);
         itemShow.setVisible(false);
+        model.load(f);
     }
 
     /**
@@ -70,6 +78,11 @@ public class RadioGUI extends javax.swing.JFrame {
         popupmenu.add(itemShow);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jScrollPane1.setComponentPopupMenu(popupmenu);
 
@@ -129,6 +142,14 @@ public class RadioGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemShowActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            model.save(f);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "save error!");
+        }
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -159,7 +180,13 @@ public class RadioGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RadioGUI().setVisible(true);
+                try {
+                    new RadioGUI().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(RadioGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(RadioGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

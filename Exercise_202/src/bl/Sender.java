@@ -1,7 +1,9 @@
 
 package bl;
 
-public class Sender {
+import java.io.Serializable;
+
+public class Sender implements Serializable {
     private String sendername;
     private double frequenz;
     private String band;
